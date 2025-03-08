@@ -1,5 +1,3 @@
-import process from 'process';
-
 const getLuckyTicketsCount = () => {
   let count = 0;
 
