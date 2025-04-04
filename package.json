@@ -1,0 +1,17 @@
+{
+  "name": "otus",
+  "version": "1.0.0",
+  "description": "Utus Homework",
+  "main": "index.js",
+  "repository": "https://github.com/zima-snow/otus.git",
+  "author": "Alexander Zimin <zimin-ai@zvuk.com>",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
+}
