@@ -1,7 +1,7 @@
 import Graph from './Graph.js';
 
 const main = () => {
-  // Create graph with 4 vertices (0, 1, 2, 3, 4, 5)
+  // Create graph with 6 vertices (0, 1, 2, 3, 4, 5)
   // Smax = 2 (max count of adjacency vertices)
   const adjacencyVector = [
     [1, 3], // 0 → 1, 0 → 3
