@@ -9,7 +9,7 @@ class SingleArray {
   };
 
   resize = () => {
-    const newArray = Array.from({ length: this.size + 1 });
+    const newArray = new Array(this.size + 1);
 
     for (let i = 0; i < this.size; i += 1) {
       newArray[i] = this.array[i];
@@ -21,18 +21,23 @@ class SingleArray {
   put = (item) => {
     this.resize();
     this.array[this.size++] = item;
-  }
+  };
 
-  add = (item, index = this.size + 1) => {
-    while (this.size < index) {
+  add = (item, index = this.size) => {
+    if (index < 0) {
+      throw Error(`Index ${index} is negative!`);
+    }
+
+    while (this.size <= index) {
       this.resize();
     }
 
     this.array[index] = item;
+    this.size = Math.max(this.size, index + 1);
   };
 
   get = (index) => {
-    if (this.size < index) {
+    if (index < 0 || index >= this.size) {
       throw Error(`Array element with index ${index} does not exists`);
     }
 
@@ -40,12 +45,18 @@ class SingleArray {
   };
 
   remove = (index) => {
-    if (this.size < index) {
-      throw Error(`Array element with index ${index} does not exists`);
+    if (index >= this.size) {
+      throw Error(`Array element with index ${index} does not exist`);
     }
 
     const removedItem = this.array[index];
-    this.array[index] = undefined;
+
+    for (let i = index; i < this.size - 1; i++) {
+      this.array[i] = this.array[i + 1];
+    }
+
+    this.array[this.size - 1] = undefined;
+    this.size--;
 
     return removedItem;
   };

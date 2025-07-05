@@ -1,5 +1,5 @@
 class FactorArray {
-  constructor(factor) {
+  constructor(factor = 2) {
     this.array = [];
     this.factor = factor;
     this.size = 0;
@@ -10,7 +10,8 @@ class FactorArray {
   };
 
   resize = () => {
-    const newArray = Array.from({ length: this.size * this.factor });
+    const newLength = this.size === 0 ? 1 : Math.floor(this.size * this.factor);
+    const newArray = new Array(newLength);
 
     for (let i = 0; i < this.size; i += 1) {
       newArray[i] = this.array[i];
@@ -25,18 +26,23 @@ class FactorArray {
     }
 
     this.array[this.size++] = item;
-  }
+  };
 
-  add = (item, index) => {
-    while (this.size < index) {
+  add = (item, index = this.size) => {
+    if (index < 0) {
+      throw Error(`Index ${index} is negative!`);
+    }
+
+    while (index >= this.array.length) {
       this.resize();
     }
 
     this.array[index] = item;
+    this.size = Math.max(this.size, index + 1);
   };
 
   get = (index) => {
-    if (this.size < index) {
+    if (index < 0 || index >= this.size) {
       throw Error(`Array element with index ${index} does not exists`);
     }
 
@@ -44,12 +50,18 @@ class FactorArray {
   };
 
   remove = (index) => {
-    if (this.size < index) {
+    if (index < 0 || index >= this.size) {
       throw Error(`Array element with index ${index} does not exists`);
     }
 
     const removedItem = this.array[index];
-    this.array[index] = undefined;
+
+    for (let i = index; i < this.size - 1; i++) {
+      this.array[i] = this.array[i + 1];
+    }
+
+    this.array[this.size - 1] = undefined;
+    this.size--;
 
     return removedItem;
   };

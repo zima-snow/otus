@@ -1,5 +1,5 @@
 class VectorArray {
-  constructor(vector) {
+  constructor(vector = 10) {
     this.array = [];
     this.vector = vector;
     this.size = 0;
@@ -10,9 +10,9 @@ class VectorArray {
   };
 
   resize = () => {
-    const newArray = Array.from({ length: this.size + this.vector });
+    const newArray = new Array(this.size + this.vector);
 
-    for (let i = 0; i < this.size; i += 1) {
+    for (let i = 0; i < this.size; i++) {
       newArray[i] = this.array[i];
     }
 
@@ -25,18 +25,23 @@ class VectorArray {
     }
 
     this.array[this.size++] = item;
-  }
+  };
 
-  add = (item, index) => {
-    while (this.size < index) {
+  add = (item, index = this.size) => {
+    if (index < 0) {
+      throw Error(`Index ${index} is negative!`);
+    }
+
+    while (index >= this.array.length) {
       this.resize();
     }
 
     this.array[index] = item;
+    this.size = Math.max(this.size, index + 1);
   };
 
   get = (index) => {
-    if (this.size < index) {
+    if (index < 0 || index >= this.size) {
       throw Error(`Array element with index ${index} does not exists`);
     }
 
@@ -44,12 +49,18 @@ class VectorArray {
   };
 
   remove = (index) => {
-    if (this.size < index) {
-      throw Error(`Array element with index ${index} does not exists`);
+    if (index < 0 || index >= this.size) {
+      throw Error(`Array element with index ${index} does not exist`);
     }
 
     const removedItem = this.array[index];
-    this.array[index] = undefined;
+
+    for (let i = index; i < this.size - 1; i++) {
+      this.array[i] = this.array[i + 1];
+    }
+
+    this.array[this.size - 1] = undefined;
+    this.size--;
 
     return removedItem;
   };
