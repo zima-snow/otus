@@ -9,13 +9,22 @@ export const compressRLE = (str) => {
     if (str[i] === currentChar) {
       count++;
     } else {
-      compressed += currentChar + (count > 1 ? count : '');
+      if (currentChar === ' ' || currentChar === '\n') {
+        compressed += currentChar;
+      } else {
+        compressed += currentChar + count;
+      }
+
       currentChar = str[i];
       count = 1;
     }
   }
 
-  compressed += currentChar + (count > 1 ? count : '');
+  if (currentChar === ' ' || currentChar === '\n') {
+    compressed += currentChar;
+  } else {
+    compressed += currentChar + count;
+  }
 
   return compressed;
 };

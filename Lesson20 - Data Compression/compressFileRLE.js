@@ -3,13 +3,23 @@ import fs from 'fs';
 
 export const compressFileRLE = (inputFilePath, outputFilePath) => {
   try {
-    // Чтение файла
-    const data = fs.readFileSync(inputFilePath, 'utf-8');
+    // 1. Проверяем, существует ли файл
+    if (!fs.existsSync(inputFilePath)) {
+      throw new Error('Файл не найден');
+    }
 
-    // Сжатие данных
+    // 2. Читаем и чистим данные
+    let data = fs.readFileSync(inputFilePath, 'utf-8');
+    data = data.replace(/^\uFEFF/, '').trim(); // убираем BOM и лишние пробелы
+
+    if (!data) {
+      throw new Error('Файл пуст');
+    }
+
+    // 3. Сжимаем
     const compressedData = compressRLE(data);
 
-    // Запись сжатого файла
+    // 4. Записываем
     fs.writeFileSync(outputFilePath, compressedData, 'utf-8');
 
     console.log(`✅ Файл сжат и сохранен как ${outputFilePath}`);
@@ -21,4 +31,4 @@ export const compressFileRLE = (inputFilePath, outputFilePath) => {
   } catch (err) {
     console.error('❌ Ошибка:', err.message);
   }
-}
+};
